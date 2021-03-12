@@ -185,8 +185,8 @@
 		9A50BD9125FC2DA40038458D /* AcessibilityFaceCursor */ = {
 			isa = PBXGroup;
 			children = (
+				9A50BEDD25FC2E510038458D /* Assets.xcassets */,
 				9A50BEA225FC2E510038458D /* FaceMouse */,
-				9A50BEDC25FC2E510038458D /* Resources */,
 				9A50BD9225FC2DA40038458D /* AcessibilityFaceCursor.h */,
 				9A50BD9325FC2DA40038458D /* Info.plist */,
 			);
@@ -463,14 +463,6 @@
 				9A50BEDB25FC2E510038458D /* PositionProtocol.swift */,
 			);
 			path = Protocol;
-			sourceTree = "<group>";
-		};
-		9A50BEDC25FC2E510038458D /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				9A50BEDD25FC2E510038458D /* Assets.xcassets */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'AcessibilityFaceCursor'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'Take the movement of the user\`s face and create a virtual cursor on the device. (IPhones X or higher only)'
   s.swift_version = '5.0'
 
@@ -22,6 +22,9 @@ For a better use of the user, there is the AccessibilityGetSensitivityViewContro
 
   s.ios.deployment_target = '13.0'
 
-  s.source_files = 'ExamplePodd/**/*'
-  s.exclude_files = "ExamplePodd/*.plist"
+  s.source_files = 'AcessibilityFaceCursor/**/*'
+  s.exclude_files = "AcessibilityFaceCursor/*.plist"
+  s.resource_bundles = {
+    'AcessibilityFaceCursor' => ['AcessibilityFaceCursor/Resources/**']
+  }
 end
