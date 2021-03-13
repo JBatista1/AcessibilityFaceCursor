@@ -53,7 +53,7 @@ class ViewController: AccessibilityFaceAnchorViewController {
 ```diff
 ! Não esqueça de importar o Pod
 ```
-Agora você deve inserir as views que podem receber ações, como botões, imagens, tabelas. Para cada um deles você deve criar uma `ViewAction`. Que é uma classe modelo que receve dois parametros o primeiro é uma `UIViews`, já que todos os tipos mencionados anteriormente herdarão dela, você pode colocar qualquer um deles. e o segundo parametro é um selector, no caso a ação que deverá ser acionada quando o usuario "clicar" em cima da view. Eu recomendo criar uma função especifica para isso como no exemplo abaixo. Pois devemos gerar um Array de ViewAction que será utilizada pela claase `ActionInView`, que é responsavel pela detecção das ações dos usuarios. Para facilitar a captura de views de navegação, como navigationController e tabbarcontroller, existem as funções na própria AccessibilityFaceAnchorViewController que pegam automaticamente, são elas: 
+Agora você deve inserir as views que podem receber ações, como UIButton, UIImageView, UITableView. Para cada um deles você deve criar uma `ViewAction`. Que é uma classe modelo que receve dois parametros o primeiro é uma `UIViews`, já que todos os tipos mencionados anteriormente herdarão dela, você pode colocar qualquer um deles. e o segundo parametro é um selector, no caso a ação que deverá ser acionada quando o usuario "clicar" em cima da view. Eu recomendo criar uma função especifica para isso como no exemplo abaixo. Pois devemos gerar um Array de ViewAction que será utilizada pela claase `ActionInView`, que é responsavel pela detecção das ações dos usuarios. Para facilitar a captura de views de navegação, como navigationController e tabbarcontroller, existem as funções na própria AccessibilityFaceAnchorViewController que pegam automaticamente, são elas: 
 
 - `getViewsActionWithTabBar()`,
 - `getViewsActionBackNavigationBar()`
@@ -91,8 +91,10 @@ override func viewDidLayoutSubviews() {
   }
 
   func createViewAction() -> [ViewAction] {
-    let viewsAction: [ViewAction] = [ViewAction(view: buttonTop, selector: #selector(buttonTopAction)),
-                                     ViewAction(view: buttonBotton, selector: #selector(buttonBottonAction)),]
+    var viewsAction: [ViewAction] = [ViewAction(view: buttonTop, selector: #selector(buttonTopAction)),
+                                     ViewAction(view: buttonBotton, selector: #selector(buttonBottonAction))]
+    // Adiciona array de ViewAction da navigation e tabbar                                
+    viewsAction.append(contentsOf: getViewActionNavigationAndTabBar())
     return viewsAction
   }
 
@@ -113,11 +115,58 @@ Pronto!, agora toda vez que o usuario realizar uma ação de clicar em um dos co
 
 ## AccessibilityFaceAnchorViewController Casos especiais
 
-Como mencionando acima temos os casos especiais para navigation e tabbar, além desses temos casos especias para 
+Como mencionando acima temos os casos especiais para navigation e tabbar, além desses temos mais um caso especial, que é para uitableView e uicollectionView. Para esses dois casos foi criado um selector especial que deve ser passado quando criar a viewaction de alguma desses dois tipos:
+
+```swift
+ @objc open func selectedCell(_ sender: Any? = nil) {
+    guard let index = sender as? IndexPath else { return }
+    delegateCellView?.cellSelected(withIndex: index)
+  }
+```
+Essa classe poderia ser sobrescrita pela sua classe e realizar a conversão do tipo de retorno para o indexPath da celula em si clicada, mas pensando na comodidade foi criado o delegate `delegateCellView` que deve ser atribuido o seu valor na sua classe e ser implementado o seu delegate como abaixo. Assim o indexPath recebido vai ser o de acordo com o tipo associado, no caso de tableview virá `indexPath(row:section)` e de collection `indexPath(item:section)` que podem ser usados para manipular suas ações como se fosse o toque do usuario na celula.
+
+```swift
+  override func viewDidLoad() {
+    delegateCellView =  self
+  }
+  
+  func createViewAction() -> [ViewAction] {
+    let viewsAction: [ViewAction] = [ViewAction(view: collectionView, selector: #selector(selectedCell(_:)))),
+                                     ViewAction(view: tablewView, selector: #selector(selectedCell(_:))),]
+    return viewsAction
+  }
+  
+  extension ViewController: CellViewSelectedProtocol {
+    func cellSelected(withIndex index: IndexPath) {
+    #warning("Index")
+  }
+}
+```
+# ActionInView
+
+Essa classe é o coração do pod, e ele que irá identificar a posição da face do usuário no app e verificar se o cursor esta em cima de alguma view que tem a opção de ser acionada. Ele faz tudo automatico,Temos 4 opções em um enum para que o usuario "clique" em cima de um botão, por exemplo, as opções são:
+- Piscar olho direito
+- Piscar olho esquerdo
+- Mostrar Lingua
+- Comando de voz
+
+Por padrão ele vem com a opção de mostrar a lingua para simular o clique na tela. Mas pode ser atualizado através do comando `action.setTypeStartAction(withType:)` que recebe um `TypeStartAction`. Ou seja, pode deixar o usuario escolher qual a melhor opção para ele e salvar essa opção no `UserDefaults`, e quando for iniciar a tela ele verificará o tipo escolhido pelo usuario e irá atribuir de forma correta.
+
+```swift
+   override func viewDidLoad() {
+    super.viewDidLoad()
+    action.setTypeStartAction(withType: .eyeLeft)
+  }
+```
+
+## ActionInView opção de Comando de voz(Beta)
+
+
 
 ## Author
 
 João Batista,j.batista.damasceno@icloud.com
+
 
 ## License
 
