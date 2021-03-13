@@ -71,13 +71,13 @@ Implementation of protocols
 
 ```swift
 extension ViewController: TabBarSelectedProtocol, NavigationBackButtonProtocol {
-func tabBar(isSelectedIndex index: Int) {
-#warning("Index tabbar ")
-}
+  func tabBar(isSelectedIndex index: Int) {
+    #warning("Index tabbar ")
+  }
 
-func actionNavigationBack() {
-#warning("back buttom press")
-}
+  func actionNavigationBack() {
+    #warning("back buttom press")
+  }
 }
 ```
 After creating all the viewActions that will be active, we must insert them in the variable `action` using the function` set (viewsAction:) `being called in viewDidLayoutSubviews, as below.
