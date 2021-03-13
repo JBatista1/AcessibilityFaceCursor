@@ -1,6 +1,6 @@
 # AcessibilityFaceCursor
 
-[![CI Status](https://img.shields.io/travis/j.batista.damasceno@icloud.com/AcessibilityFace.svg?style=flat)](https://travis-ci.org/JBatista1/AcessibilityFaceCursor.svg?branch=main)
+[![Build Status](https://travis-ci.org/JBatista1/AcessibilityFaceCursor.svg?branch=main)](https://travis-ci.org/JBatista1/AcessibilityFaceCursor)
 [![Version](https://img.shields.io/cocoapods/v/AcessibilityFaceCursor.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFaceCursor)
 [![License](https://img.shields.io/cocoapods/l/AcessibilityFaceCursor.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFaceCurtor)
 [![Platform](https://img.shields.io/cocoapods/p/AcessibilityFaceCursor.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFaceCursor)
