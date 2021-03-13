@@ -42,10 +42,10 @@ import AcessibilityFaceCursor
 
 class ViewController: AccessibilityFaceAnchorViewController {
 
-override func viewDidLoad() {
-super.viewDidLoad()
-cursor.image = UIImage(named: "cursorDefault")
-}
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    cursor.image = UIImage(named: "cursorDefault")
+  }
 }
 
 ```
@@ -62,10 +62,9 @@ Where the first returns a viewAction for tabbar, the second for navigation and t
 
 ```swift
 override func viewDidLoad() {
-super.viewDidLoad()
-delegateTabBar = self
-delegateNavigationBar = self
-}
+  super.viewDidLoad()
+  delegateTabBar = self
+  delegateNavigationBar = self
 }
 ```
 Implementation of protocols
@@ -85,22 +84,21 @@ After creating all the viewActions that will be active, we must insert them in t
 
 ```swift
 override func viewDidLayoutSubviews() {
-super.viewDidLayoutSubviews()
-action.set(viewsAction: createViewAction())
+  super.viewDidLayoutSubviews()
+  action.set(viewsAction: createViewAction())
 }
 
 func createViewAction() -> [ViewAction] {
-var viewsAction: [ViewAction] = [ViewAction(view: buttonTop, selector: #selector(buttonTopAction)),
-ViewAction(view: buttonBotton, selector: #selector(buttonBottonAction))]
-// Adiciona array de ViewAction da navigation e tabbar                                
-viewsAction.append(contentsOf: getViewActionNavigationAndTabBar())
-return viewsAction
+  var viewsAction: [ViewAction] = [ViewAction(view: buttonTop, selector: #selector(buttonTopAction)),
+  ViewAction(view: buttonBotton, selector: #selector(buttonBottonAction))]
+  // Adiciona array de ViewAction da navigation e tabbar                                
+  viewsAction.append(contentsOf: getViewActionNavigationAndTabBar())
+  return viewsAction
 }
 
 @objc func buttonTopAction() {}
 
 @objc func buttonBottonAction() {}
-}
 ```
 
 > :warning: **Do not forget**: It has to be inserted in the viewDidLayoutSubviews, because the tabbar and back button views are inserted in the hierarchy after this function. Before that, its size is zero and will not be detected when the cursor passes over it!
@@ -117,27 +115,27 @@ As mentioned above we have the special cases for navigation and tabbar, in addit
 
 ```swift
 @objc open func selectedCell(_ sender: Any? = nil) {
-guard let index = sender as? IndexPath else { return }
-delegateCellView?.cellSelected(withIndex: index)
+  guard let index = sender as? IndexPath else { return }
+  delegateCellView?.cellSelected(withIndex: index)
 }
 ```
 This class could be overridden by its class and convert the return type to the indexPath of the cell itself clicked, but with the convenience in mind, the delegate `delegateCellView` was created, which should be assigned its value in its class and implemented. your delegate as below. So the indexPath received will be the one according to the associated type, in the case of tableview will come `indexPath (row: section)` and from collection `indexPath (item: section)` that can be used to manipulate your actions as if it were the user's touch on the cell.
 
 ```swift
 override func viewDidLoad() {
-delegateCellView =  self
+  delegateCellView =  self
 }
 
 func createViewAction() -> [ViewAction] {
-let viewsAction: [ViewAction] = [ViewAction(view: collectionView, selector: #selector(selectedCell(_:)))),
-ViewAction(view: tablewView, selector: #selector(selectedCell(_:))),]
-return viewsAction
+  let viewsAction: [ViewAction] = [ViewAction(view: collectionView, selector: #selector(selectedCell(_:)))),
+  ViewAction(view: tablewView, selector: #selector(selectedCell(_:))),]
+  return viewsAction
 }
 
 extension ViewController: CellViewSelectedProtocol {
-func cellSelected(withIndex index: IndexPath) {
-#warning("Index")
-}
+  func cellSelected(withIndex index: IndexPath) {
+    #warning("Index")
+  }
 }
 ```
 # ActionInView
@@ -152,8 +150,8 @@ By default it comes with the option to show the language to simulate the click o
 
 ```swift
 override func viewDidLoad() {
-super.viewDidLoad()
-action.setTypeStartAction(withType: .eyeLeft)
+  super.viewDidLoad()
+  action.setTypeStartAction(withType: .eyeLeft)
 }
 ```
 
@@ -175,18 +173,18 @@ The activate command, does the same role of blinking the eye or showing the lang
 
 ```swift
 func collectionViewConfiguration() {
-collectionView.dataSource = self
-collectionView.delegate = self
-delegateScroll = self
+  collectionView.dataSource = self
+  collectionView.delegate = self
+  delegateScroll = self
 }
 extension CollectionTestViewController: ScrollActionDelegate {
-func scrollNext() {
-collectionView.nextCell()
-}
+  func scrollNext() {
+    collectionView.nextCell()
+  }
 
-func scrollBack() {
-collectionView.backCell()
-}
+  func scrollBack() {
+    collectionView.backCell()
+  }
 }
 
 ```
@@ -202,22 +200,22 @@ Now that the languages have been prepared, and the respective delegates as well,
 
 ```swift
 override func viewDidLoad() {
-super.viewDidLoad()
-voiceAction.set(locale: Locale.current)
-voiceAction.delegate = self
+  super.viewDidLoad()
+  voiceAction.set(locale: Locale.current)
+  voiceAction.delegate = self
 }
 extension ViewController: VoiceActionResponseProtocol {
-func permissionGranted() {
-voiceAction.initialRecording()
+  func permissionGranted() {
+    voiceAction.initialRecording()
 }
 
-func errorPermission(status: SFSpeechRecognizerAuthorizationStatus) {
-#warning("Retorna o tipo de erro")
+  func errorPermission(status: SFSpeechRecognizerAuthorizationStatus) {
+    #warning("Retorna o tipo de erro")
 }
 
-func errorGeneric() {
-#warning("Erro generico")
-}
+  func errorGeneric() {
+    #warning("Erro generico")
+  }
 }
 ```
 From there it will already detect the commands and carry out the respective actions.
@@ -232,58 +230,56 @@ Bearing in mind that each person can rotate a certain limitation, for example, r
 
 ```swift
 public protocol GetSensitivityProtocol: AnyObject {
-func startCaptura()
-func returnCapture(theValue value: CGFloat)
+  func startCaptura()
+  func returnCapture(theValue value: CGFloat)
 }
 ```
 This first function is called when the capture is started, that is, when the user has stopped moving the face, or moves with a low tolerance. And the second when this capture is finished, that is, he took the average value of movement in that direction. To start a capture, you must call the function `initialCapture (withDirection direction: DirectiorFaceMoviment)` and pass the chosen direction of rotation, it can be on the X axis that and when you move the head up and down, or on the Y axis when the rotation is right or left. The result does not say if you moved it to the right or left it just gives a value, so you explain to the user the direction for example it presents on the screen: Move the head to the right, you to the direction of the Y axis, and when capturing you assign this value from the right to an object called `FaceSensitivity`, which has the 4 directions as parameters. After capturing these 4 values ​​you can send this parameter to an AccessibilityFaceAnchorViewController that has this parameter to update the values ​​to be calculated at the time of the representation of the screen `set (faceSensitivity: FaceSensitivity)`. This value can also be saved in the userDefault, assigned to each screen. It is at the discretion of the developer. But by default this faceSensitivity already comes with a default value.
 
 ```swift
 override func viewDidLoad() {
-super.viewDidLoad()
-sensibilityDelegate = self
-}
+  super.viewDidLoad()
+  sensibilityDelegate = self
 }
 
 extension CaptureFaceSensibilityViewController: GetSensitivityProtocol {
 
 func startCaptura() {
-DispatchQueue.main.async { // Correct
-self.captureButton.setTitle(Strings.processando, for: .normal)
-}
+  DispatchQueue.main.async { // Correct
+   self.captureButton.setTitle(Strings.processando, for: .normal)
+  }
 }
 
 func returnCapture(theValue value: CGFloat) {
-DispatchQueue.main.async { // Correct
-self.captureButton.setTitle(Strings.iniciar, for: .normal)
-guard let actualDectection = self.arrayLimited.first else {return}
-switch actualDectection {
-case .top:
-self.faceSensitivity.limitedTopX = value
-self.titleLabel.text = "Mova a cabeça para a Baixo e clique em iniciar"
-case .botton:
-self.faceSensitivity.limitedBottonX = value
-self.titleLabel.text = "Mova a cabeça para a Esquerda e clique em iniciar"
-case .left:
-self.faceSensitivity.limitedLeftY = value
-self.titleLabel.text = "Mova a cabeça para a Direita e clique em iniciar"
-case .right:
-self.faceSensitivity.limitedRightY = value
-}
-self.arrayLimited.removeFirst()
-guard let nextDectection = self.arrayLimited.first else {return}
+  DispatchQueue.main.async { // Correct
+  self.captureButton.setTitle(Strings.iniciar, for: .normal)
+  guard let actualDectection = self.arrayLimited.first else {return}
+  switch actualDectection {
+    case .top:
+      self.faceSensitivity.limitedTopX = value
+      self.titleLabel.text = "Mova a cabeça para a Baixo e clique em iniciar"
+    case .botton:
+      self.faceSensitivity.limitedBottonX = value
+      self.titleLabel.text = "Mova a cabeça para a Esquerda e clique em iniciar"
+    case .left:
+      self.faceSensitivity.limitedLeftY = value
+      self.titleLabel.text = "Mova a cabeça para a Direita e clique em iniciar"
+    case .right:
+      self.faceSensitivity.limitedRightY = value
+  }
+  self.arrayLimited.removeFirst()
+  guard let nextDectection = self.arrayLimited.first else {return}
 }
 }
 
 override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-if let barViewControllers = segue.destination as? UITabBarController,
-let destinationViewController = barViewControllers.viewControllers![0] as? MovimentTestViewController {
-destinationViewController.set(faceSensitivity: faceSensitivity)
-}
+  if let barViewControllers = segue.destination as? UITabBarController,
+  let destinationViewController = barViewControllers.viewControllers![0] as? MovimentTestViewController {
+  destinationViewController.set(faceSensitivity: faceSensitivity)
+  }
 }
 }
 ```
-
 
 ## Author
 
