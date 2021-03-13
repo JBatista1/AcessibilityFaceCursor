@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'AcessibilityFaceCursor'
-  s.version          = '0.0.6'
+  s.version          = '0.0.7'
   s.summary          = 'Take the movement of the user\`s face and create a virtual cursor on the device. (IPhones X or higher only)'
   s.swift_version = '5.0'
 
