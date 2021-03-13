@@ -32,7 +32,6 @@ open class AcessibilityViewController: UIViewController {
   // MARK: - Private Class Methods
 
   private func setupCursor() {
-    cursor.image = Asset.cursorDefault.image
     cursor.accessibilityIdentifier = AccessibilityUIType.uiCursor.identifier
   }
 
