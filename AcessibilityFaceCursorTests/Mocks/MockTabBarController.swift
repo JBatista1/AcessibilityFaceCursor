@@ -1,6 +1,6 @@
 //
 //  MockTabBarController.swift
-//  AcessibilityFaceMouseTests
+//  AcessibilityFaceCursorTests
 //
 //  Created by Joao Batista on 10/03/21.
 //  Copyright © 2021 Joao Batista. All rights reserved.

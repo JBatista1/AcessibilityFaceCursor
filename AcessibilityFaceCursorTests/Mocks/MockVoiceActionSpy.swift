@@ -1,12 +1,12 @@
 //
 //  MockVoiceActionSpy.swift
-//  AcessibilityFaceMouseTests
+//  AcessibilityFaceCursorTests
 //
 //  Created by Joao Batista on 09/03/21.
 //  Copyright © 2021 Joao Batista. All rights reserved.
 //
 
-@testable import AcessibilityFaceMouse
+@testable import AcessibilityFaceCursor
 import Speech
 
 class MockVoiceActionSpy: VoiceActionCommandProtocol, VoiceActionResponseProtocol {
