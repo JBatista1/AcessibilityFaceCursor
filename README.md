@@ -244,40 +244,40 @@ override func viewDidLoad() {
 
 extension CaptureFaceSensibilityViewController: GetSensitivityProtocol {
 
-func startCaptura() {
-  DispatchQueue.main.async { // Correct
-   self.captureButton.setTitle(Strings.processando, for: .normal)
+  func startCaptura() {
+   DispatchQueue.main.async { // Correct
+     self.captureButton.setTitle(Strings.processando, for: .normal)
+    }
   }
-}
 
-func returnCapture(theValue value: CGFloat) {
-  DispatchQueue.main.async { // Correct
-  self.captureButton.setTitle(Strings.iniciar, for: .normal)
-  guard let actualDectection = self.arrayLimited.first else {return}
-  switch actualDectection {
-    case .top:
-      self.faceSensitivity.limitedTopX = value
-      self.titleLabel.text = "Mova a cabeça para a Baixo e clique em iniciar"
-    case .botton:
-      self.faceSensitivity.limitedBottonX = value
-      self.titleLabel.text = "Mova a cabeça para a Esquerda e clique em iniciar"
-    case .left:
-      self.faceSensitivity.limitedLeftY = value
-      self.titleLabel.text = "Mova a cabeça para a Direita e clique em iniciar"
-    case .right:
-      self.faceSensitivity.limitedRightY = value
+  func returnCapture(theValue value: CGFloat) {
+   DispatchQueue.main.async { // Correct
+   self.captureButton.setTitle(Strings.iniciar, for: .normal)
+   guard let actualDectection = self.arrayLimited.first else {return}
+   switch actualDectection {
+     case .top:
+        self.faceSensitivity.limitedTopX = value
+        self.titleLabel.text = "Mova a cabeça para a Baixo e clique em iniciar"
+     case .botton:
+       self.faceSensitivity.limitedBottonX = value
+       self.titleLabel.text = "Mova a cabeça para a Esquerda e clique em iniciar"
+     case .left:
+       self.faceSensitivity.limitedLeftY = value
+       self.titleLabel.text = "Mova a cabeça para a Direita e clique em iniciar"
+     case .right:
+       self.faceSensitivity.limitedRightY = value
+    }
+    self.arrayLimited.removeFirst()
+    guard let nextDectection = self.arrayLimited.first else {return}
   }
-  self.arrayLimited.removeFirst()
-  guard let nextDectection = self.arrayLimited.first else {return}
-}
-}
+ }
 
-override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-  if let barViewControllers = segue.destination as? UITabBarController,
-  let destinationViewController = barViewControllers.viewControllers![0] as? MovimentTestViewController {
-  destinationViewController.set(faceSensitivity: faceSensitivity)
+ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let barViewControllers = segue.destination as? UITabBarController,
+    let destinationViewController = barViewControllers.viewControllers![0] as? MovimentTestViewController {
+     destinationViewController.set(faceSensitivity: faceSensitivity)
+    }
   }
-}
 }
 ```
 
