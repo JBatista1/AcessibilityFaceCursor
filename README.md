@@ -1,9 +1,9 @@
 # AcessibilityFaceCursor
 
-[![CI Status](https://img.shields.io/travis/j.batista.damasceno@icloud.com/AcessibilityFace.svg?style=flat)](https://travis-ci.org/j.batista.damasceno@icloud.com/AcessibilityFace)
-[![Version](https://img.shields.io/cocoapods/v/AcessibilityFace.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFace)
-[![License](https://img.shields.io/cocoapods/l/AcessibilityFace.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFace)
-[![Platform](https://img.shields.io/cocoapods/p/AcessibilityFace.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFace)
+[![CI Status](https://img.shields.io/travis/j.batista.damasceno@icloud.com/AcessibilityFace.svg?style=flat)](https://travis-ci.org/JBatista1/AcessibilityFaceCursor.svg?branch=main)
+[![Version](https://img.shields.io/cocoapods/v/AcessibilityFaceCursor.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFaceCursor)
+[![License](https://img.shields.io/cocoapods/l/AcessibilityFaceCursor.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFaceCurtor)
+[![Platform](https://img.shields.io/cocoapods/p/AcessibilityFaceCursor.svg?style=flat)](https://cocoapods.org/pods/AcessibilityFaceCursor)
 
 ## Example
 
@@ -22,8 +22,9 @@ pod 'AcessibilityFaceCursor'
 
 ## Author
 
-j.batista.damasceno@icloud.com, joao.damasceno@bs2tecnologia.com.br
+j.batista.damasceno@icloud.com
 
 ## License
 
 AcessibilityFace is available under the MIT license. See the LICENSE file for more info.
+(Pode pegar, brincar, melhorar contanto que faça isso para ajudar alguem, e depois só me colocar no Copyright que dá certo!)
