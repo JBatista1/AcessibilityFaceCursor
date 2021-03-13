@@ -66,7 +66,7 @@
 		9A50BF0325FC2E510038458D /* VoiceActionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A50BED925FC2E510038458D /* VoiceActionProtocol.swift */; };
 		9A50BF0425FC2E510038458D /* ActionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A50BEDA25FC2E510038458D /* ActionProtocol.swift */; };
 		9A50BF0525FC2E510038458D /* PositionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A50BEDB25FC2E510038458D /* PositionProtocol.swift */; };
-		9A50BF0625FC2E510038458D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A50BEDD25FC2E510038458D /* Assets.xcassets */; };
+		9A50BF0825FC391D0038458D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A50BF0725FC391D0038458D /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,7 +142,7 @@
 		9A50BED925FC2E510038458D /* VoiceActionProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceActionProtocol.swift; sourceTree = "<group>"; };
 		9A50BEDA25FC2E510038458D /* ActionProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionProtocol.swift; sourceTree = "<group>"; };
 		9A50BEDB25FC2E510038458D /* PositionProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionProtocol.swift; sourceTree = "<group>"; };
-		9A50BEDD25FC2E510038458D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9A50BF0725FC391D0038458D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,7 +185,7 @@
 		9A50BD9125FC2DA40038458D /* AcessibilityFaceCursor */ = {
 			isa = PBXGroup;
 			children = (
-				9A50BEDD25FC2E510038458D /* Assets.xcassets */,
+				9A50BF0725FC391D0038458D /* Assets.xcassets */,
 				9A50BEA225FC2E510038458D /* FaceMouse */,
 				9A50BD9225FC2DA40038458D /* AcessibilityFaceCursor.h */,
 				9A50BD9325FC2DA40038458D /* Info.plist */,
@@ -557,7 +557,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A50BF0625FC2E510038458D /* Assets.xcassets in Resources */,
+				9A50BF0825FC391D0038458D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
