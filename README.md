@@ -9,6 +9,7 @@
 
 - iOS 13.0 +
 - Funciona apenas para dispositivos com o conjunto de camera TrueDepth, Iphones da geração X e superior. (Por enquanto)
+- E necessario ter um sistema de navegação como NavigationController ou TabBarController
 
 
 ## Instalação
@@ -32,120 +33,87 @@ O primeiro e para capturar o movimendo da cabeça do usuário, o segundo e terce
 
 # AccessibilityFaceAnchorViewController
 
-Após modificar a herança da sua viewcontroller pela AccessibilityFaceAnchorViewController, e a captura da face do usuario já vai ser iniciada e ira aparecer um cursor na tela que se move de acordo com a face do usuario. 
+Deve importar o pod e modificar a herança da sua viewcontroller pela AccessibilityFaceAnchorViewController, e a captura da face do usuario já vai ser iniciada automaticamente, caso o usuario permita. 
+
+O cursor que aparece na tela deverá ser inserido após o viewDidLoad, você pode pegar como exemplo o cursor que esta na pasta cursor desse projeto, que foi obtido em [FlatIcon](https://www.flaticon.com/). O seu tamanho também pode ser modificado de acordo com sua escolha, por padrão ele e 30x30.
 
 ```swift
-final class MenuScene: SKScene, MKMenuScene {
-    var matchmaker: Matchmaker?
-    
-    func didAuthenticationChanged(to state: Matchmaker.AuthenticationState) {
-        
-    }
-    
-    func willStartGame() {
-        //Presenting Scene example:
-        view?.presentScene(GameScene(), transition: .crossFade(withDuration: 1.0))
-    }
+import UIKit
+import AcessibilityFaceCursor
+
+class ViewController: AccessibilityFaceAnchorViewController {
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    cursor.image = UIImage(named: "cursorDefault")
+  }
 }
 
-class GameScene: SKScene, MKGameScene {
-    var multiplayerService: MultiplayerService 
-    func didReceive(message: Message, from player: GKPlayer) {
-        //Your Implementation
-    }
-    
-    func didPlayerConnected() {
-        //Your Implementation
-    }
-}
 ```
 ```diff
-! MenuScene must be final class
+! Não esqueça de importar o Pod
 ```
-In `willStartGame()` method present the scene:
+Agora você deve inserir as views que podem receber ações, como botões, imagens, tabelas. Para cada um deles você deve criar uma `ViewAction`. Que é uma classe modelo que receve dois parametros o primeiro é uma `UIViews`, já que todos os tipos mencionados anteriormente herdarão dela, você pode colocar qualquer um deles. e o segundo parametro é um selector, no caso a ação que deverá ser acionada quando o usuario "clicar" em cima da view. Eu recomendo criar uma função especifica para isso como no exemplo abaixo. Pois devemos gerar um Array de ViewAction que será utilizada pela claase `ActionInView`, que é responsavel pela detecção das ações dos usuarios. Para facilitar a captura de views de navegação, como navigationController e tabbarcontroller, existem as funções na própria AccessibilityFaceAnchorViewController que pegam automaticamente, são elas: 
+
+- `getViewsActionWithTabBar()`,
+- `getViewsActionBackNavigationBar()`
+- `getViewActionNavigationAndTabBar()` 
+
+Onde a primeira retorna uma viewAction para tabbar, a segunda para a navigation e a terceira para ambas.Lembrando que de navigation somente o botão de retorno é criado. No caso o botão da esquerda. Para o dá direira, deve-se criar manualmente como um botão na tela. Os selectors dessas classes sáo gerados pela AccessibilityFaceAnchorViewController, e para identificar que o botão back foi acionando na navigation ou qual tab foi acionada na tabbar, devese implementar os delegates `TabBarSelectedProtocol` para a tabbar e `NavigationBackButtonProtocol` para naviagtion em sua view. As instancias desses delegates também são vaiaveis acessiveis na sua classe, `delegateTabBar` e `delegateNavigationBar`, então é so atribuir self em seus valores como abaixo e implementar os seus delegates.
 
 ```swift
-func willStartGame() {
-    view?.presentScene(GameScene(), transition: .crossFade(withDuration: 1.0))
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    delegateTabBar = self
+    delegateNavigationBar = self
+  }
+}
+```
+Implementação dos protocolos 
+
+```swift
+extension ViewController: TabBarSelectedProtocol, NavigationBackButtonProtocol {
+  func tabBar(isSelectedIndex index: Int) {
+    #warning("Index tabbar ")
+  }
+
+  func actionNavigationBack() {
+    #warning("back buttom press")
+  }
+}
+```
+Após inserida todas as viewActions serão ativas, devemos inserir elas na variabel `action` função `set(viewsAction:)` na função viewDidLayoutSubviews, como abaixo.
+
+```swift
+override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    action.set(viewsAction: createViewAction())
+  }
+
+  func createViewAction() -> [ViewAction] {
+    let viewsAction: [ViewAction] = [ViewAction(view: buttonTop, selector: #selector(buttonTopAction)),
+                                     ViewAction(view: buttonBotton, selector: #selector(buttonBottonAction)),]
+    return viewsAction
+  }
+
+  @objc func buttonTopAction() {}
+
+  @objc func buttonBottonAction() {}
 }
 ```
 
-To present matchmaker, call the function presentMatchmaker in MenuScene, or associate to a button action. Example:
+> :warning: **Não se esqueça**: Tem que ser inserido na viewDidLayoutSubviews, por que as views de tabbar e do botão back são inseridas na hierarquia após essa função. Antes disso o seu tamanho e zero e não serar detectado quando o cursor passar por cima!
+> 
 
-```swift
-startButton.actionBlock = presentMatchMaker
-```
+> :exclamation: **Importante**: Todas as funções como viewDidLoad e viewDidLayoutSubviews, no seu escopo tem que chamar a sua super. como exemplo super.viewDidLayoutSubview
+> 
 
-After Game Scene conforms to MKGameScene, you must associate the scene:
+Pronto!, agora toda vez que o usuario realizar uma ação de clicar em um dos componentes feitos, ele irá chamar a sua respectiva função selector.
 
-```swift
-override func didMove(to view: SKView) {
-    multiplayerService.gameScene = self
-    //...
-}
-```
 
-You can access all player in the match through `multiplayerService.players`. Example allocating all players in the scene:
+## AccessibilityFaceAnchorViewController Casos especiais
 
-```swift
-func setupPlayers() {
-    //...
-    multiplayerService.players.forEach {
-        let player = SpaceShip(gkPlayer: $0, texture: SKTexture(imageNamed: "ship"))
-        allPlayersNode[$0] = player
-        addChild(player)
-    }
-}
-```
-
-In GameViewController instantiate the Matchmaker and Menu Scene
-
-```swift
-if let skView = view as? SKView {
-  let matchmaker = Matchmaker(authenticationViewController: self)
-  let menuScene = MenuScene(matchmaker: matchmaker)
-  skView.presentScene(menuScene)
-}
-```
-
-## Create custom messages
-
-Create a struct that conforms to Message protocol. Example:
-
-```swift
-struct Position: Message {
-    var point: CGPoint, angle: CGFloat
-}
-```
-
-# Send Messages
-
-In your GameScene call the method `send(_ message: Message)` of MultiplayerService. Example:
-
-```swift
-let position = Position(point: position, angle: angle)
-multiplayerService.send(position)
-```
-
-# Receive Messages
-
-The method `didReceive(message: Message, from player: GKPlayer)` in GameScene is responsable to receive all messages. Example, with `Position`, `Attack` and `StartGame` messages:
-
-```swift
-  func didReceive(message: Message, from player: GKPlayer) {
-        guard let playerNode = allPlayersNode[player] else { return }
-        switch message {
-        case let position as Position:
-            playerNode.changePlayer(position: position.point, angle: position.angle)
-        case let startGame as StartGame:
-            //Start game Logic
-        case let attack as Attack:
-            //Player attack Logic
-        default:
-            break
-        }
-    }
-```
+Como mencionando acima temos os casos especiais para navigation e tabbar, além desses temos casos especias para 
 
 ## Author
 
